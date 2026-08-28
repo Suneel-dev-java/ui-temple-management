@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-dev-light text-ink font-body;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: 'Tiro Devanagari Hindi', serif;
+}
+
+/* Kolam dot rule — a recurring motif standing in for the temple's floor
+   patterns, used as a quiet section divider instead of a plain <hr>. */
+.kolam-rule {
+  height: 6px;
+  background-image: radial-gradient(currentColor 1.4px, transparent 1.6px);
+  background-size: 14px 6px;
+  background-repeat: repeat-x;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
