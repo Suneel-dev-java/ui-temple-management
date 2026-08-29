@@ -22,6 +22,7 @@ import PanchangamWidget from "./components/features/PanchangamWidget";
 import VirtualDarshanModal from "./components/features/VirtualDarshanModal";
 import EHundiModal from "./components/features/EHundiModal";
 import TravelGuideModal from "./components/features/TravelGuideModal";
+import VolunteerRegistrationModal from "./components/features/VolunteerRegistrationModal";
 
 export default function App() {
   // Auth state — check localStorage on mount
@@ -35,6 +36,7 @@ export default function App() {
   const [activeAboutSection, setActiveAboutSection] = useState(null);
   const [showLoginPoojaPopup, setShowLoginPoojaPopup] = useState(false);
   const [activeFeatureModal, setActiveFeatureModal] = useState(null); // null | 'panchangam' | 'darshan' | 'hundi' | 'travel'
+  const [selectedVolunteerPass, setSelectedVolunteerPass] = useState(null);
 
   // Always start at home on refresh/page load
   const [currentView, setCurrentView] = useState("home");
@@ -162,6 +164,7 @@ export default function App() {
   const goHome = () => {
     setCurrentView("home");
     setActiveAboutSection(null);
+    setActiveFeatureModal(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -210,6 +213,10 @@ export default function App() {
             setCurrentView("receipt");
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
+          onOpenVolunteer={(pass) => {
+            setSelectedVolunteerPass(pass && typeof pass === "object" ? pass : null);
+            setActiveFeatureModal("volunteer");
+          }}
         />
       ) : currentView === "phonepe" ? (
         <PhonePeGateway 
@@ -227,6 +234,7 @@ export default function App() {
           onClose={goHome}
           onBookPooja={(pooja) => setBookingModalItem({ item: pooja, type: "seva" })}
           onDonatePooja={handleAddDonationToCart}
+          onOpenVolunteer={(poojaName) => setActiveFeatureModal("volunteer")}
         />
       ) : activeAboutSection === null ? (
         <>
@@ -274,7 +282,21 @@ export default function App() {
 
       {/* Feature Modals */}
       {activeFeatureModal === "panchangam" && (
-        <PanchangamWidget onClose={() => setActiveFeatureModal(null)} />
+        <PanchangamWidget
+          onClose={() => {
+            setActiveFeatureModal(null);
+            goHome();
+          }}
+          onOpenFeature={(feat) => setActiveFeatureModal(feat)}
+          onBookSeva={() => {
+            setActiveFeatureModal(null);
+            setCurrentView("home");
+            setTimeout(() => {
+              const el = document.getElementById("sevas");
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            }, 200);
+          }}
+        />
       )}
 
       {activeFeatureModal === "darshan" && (
@@ -300,6 +322,16 @@ export default function App() {
 
       {activeFeatureModal === "travel" && (
         <TravelGuideModal onClose={() => setActiveFeatureModal(null)} />
+      )}
+
+      {activeFeatureModal === "volunteer" && (
+        <VolunteerRegistrationModal
+          onClose={() => {
+            setActiveFeatureModal(null);
+            setSelectedVolunteerPass(null);
+          }}
+          initialPass={selectedVolunteerPass}
+        />
       )}
     </div>
   );

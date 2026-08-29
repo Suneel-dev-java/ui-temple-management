@@ -3,7 +3,7 @@ import poojaCalendar, { EVENT_TYPE_META } from "../../config/poojaData";
 import SectionHeading from "../ui/SectionHeading";
 
 /* ── Pooja Detail Popup ──────────────────────────────────────── */
-function PoojaPopup({ event, month, onClose, onBook, onDonate }) {
+function PoojaPopup({ event, month, onClose, onBook, onDonate, onOpenVolunteer }) {
   const meta = EVENT_TYPE_META[event.type] || EVENT_TYPE_META.daily;
   const [donationAmt, setDonationAmt] = useState("501");
   const [devoteeName, setDevoteeName] = useState("");
@@ -82,23 +82,22 @@ function PoojaPopup({ event, month, onClose, onBook, onDonate }) {
           </p>
 
           {/* Action row */}
-          <div className="grid grid-cols-2 gap-3 pt-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
             <button
               onClick={() => { onBook(event, month); onClose(); }}
-              className="bg-dev-orange text-white text-xs font-bold py-2.5 px-3 rounded-lg hover:bg-dev-orange/90 transition-colors shadow-sm flex items-center justify-center gap-1.5"
+              className="bg-dev-orange text-white text-xs font-bold py-2 px-3 rounded-lg hover:bg-dev-orange/90 transition-colors shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M5 13l4 4L19 7"/></svg>
               Book This Pooja
             </button>
             <button
               onClick={() => {
-                onDonate(month, parseFloat(donationAmt) || 501, devoteeName || "Anonymous Devotee");
                 onClose();
+                if (onOpenVolunteer) onOpenVolunteer(event.pooja);
               }}
-              className="bg-maroon-900 text-gold-400 text-xs font-bold py-2.5 px-3 rounded-lg hover:bg-maroon-950 transition-colors shadow-sm flex items-center justify-center gap-1.5"
+              className="bg-maroon-900 text-gold-400 text-xs font-bold py-2 px-3 rounded-lg hover:bg-maroon-950 transition-colors shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"
             >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              Donate to Yagam
+              🚩 Register as Volunteer
             </button>
           </div>
 
@@ -172,7 +171,7 @@ function DayCard({ event, onClick }) {
 }
 
 /* ── Main Component ──────────────────────────────────────────── */
-export default function PoojaCalendar({ onClose, onBookPooja, onDonatePooja }) {
+export default function PoojaCalendar({ onClose, onBookPooja, onDonatePooja, onOpenVolunteer }) {
   const currentMonthIdx = new Date().getMonth(); // 0-11
   // Map calendar months roughly to Telugu months starting from Chaitra (March = index 2)
   const teluguMonthIdx = ((currentMonthIdx - 2 + 12) % 12);
@@ -231,6 +230,7 @@ export default function PoojaCalendar({ onClose, onBookPooja, onDonatePooja }) {
           onClose={() => setPopupEvent(null)}
           onBook={handleBook}
           onDonate={handleDonate}
+          onOpenVolunteer={onOpenVolunteer}
         />
       )}
 

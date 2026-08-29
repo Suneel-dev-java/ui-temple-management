@@ -156,7 +156,15 @@ export default function Navbar({ onSelectAboutSection, onViewCart, cartCount, on
 
             {/* Helpers (Volunteer, Shop, Search, Cart) - Desktop only */}
             <div className="hidden md:flex items-center gap-4 text-xs font-semibold">
-              <a href="#volunteer" className="hover:text-white/80 transition-colors">Volunteer</a>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  onOpenFeature && onOpenFeature("volunteer");
+                }}
+                className="hover:text-white/80 transition-colors font-semibold cursor-pointer bg-transparent border-none text-white text-xs"
+              >
+                Volunteer
+              </button>
               <a href="#shop" className="hover:text-white/80 transition-colors">Shop</a>
               
               {/* Shopping Cart */}
@@ -251,7 +259,7 @@ export default function Navbar({ onSelectAboutSection, onViewCart, cartCount, on
                               <button
                                 key={sub.id}
                                 onClick={() => {
-                                  if (sub.id === "panchangam" || sub.id === "darshan" || sub.id === "travel" || sub.id === "hundi") {
+                                  if (sub.id === "panchangam" || sub.id === "darshan" || sub.id === "travel" || sub.id === "hundi" || sub.id === "volunteer") {
                                     onOpenFeature && onOpenFeature(sub.id);
                                   } else {
                                     onSelectAboutSection(sub.id);
@@ -302,7 +310,15 @@ export default function Navbar({ onSelectAboutSection, onViewCart, cartCount, on
         {open && (
           <nav className="md:hidden px-4 pb-4 pt-2 flex flex-col gap-2 bg-dev-orange/95 backdrop-blur-sm">
             <div className="flex flex-col gap-2 pb-2.5 border-b border-white/10 text-xs font-semibold">
-              <a href="#volunteer" onClick={() => setOpen(false)} className="hover:text-white/80">Volunteer</a>
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  onOpenFeature && onOpenFeature("volunteer");
+                }}
+                className="text-left font-semibold text-white hover:text-white/80 text-xs bg-transparent border-none p-0 cursor-pointer"
+              >
+                Volunteer
+              </button>
               <a href="#shop" onClick={() => setOpen(false)} className="hover:text-white/80">Shop</a>
             </div>
             {siteConfig.nav.map((l) => {

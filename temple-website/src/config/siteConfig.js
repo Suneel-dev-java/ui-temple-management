@@ -39,6 +39,7 @@ const siteConfig = {
       subItems: [
         { label: "Overview", id: "sevas_overview" },
         { label: "360° Virtual Darshan", id: "darshan" },
+        { label: "Volunteer Seva ID Card", id: "volunteer" },
         { label: "Today's Panchangam", id: "panchangam" },
         { label: "Yearly Pooja Calendar", id: "calendar" },
         { label: "Pratyaksha Seva", id: "sevas_pratyaksha" },

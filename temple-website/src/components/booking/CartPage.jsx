@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function CartPage({ cart, bookings, onRemoveItem, onCheckout, onClose, onViewReceipt }) {
+export default function CartPage({ cart, bookings, onRemoveItem, onCheckout, onClose, onViewReceipt, onOpenVolunteer }) {
   const [activeTab, setActiveTab] = useState("cart"); // "cart" | "history"
   const [agreedTerms, setAgreedTerms] = useState(false);
 
@@ -200,77 +200,136 @@ export default function CartPage({ cart, bookings, onRemoveItem, onCheckout, onC
               </div>
             )
           ) : (
-            /* Booking History Tab */
-            bookings.length === 0 ? (
-              <div className="text-center py-8 space-y-3">
-                <div className="text-ink/30 text-4xl">🎟️</div>
-                <h3 className="font-display text-base font-bold text-maroon-900">No Past Bookings</h3>
-                <p className="text-xs text-ink/70 max-w-xs mx-auto">
-                  You don't have any completed bookings or receipts yet.
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
-                {bookings.map((receipt) => (
-                  <div
-                    key={receipt.transactionId}
-                    className="border border-gold-500/25 bg-white rounded-lg overflow-hidden shadow-sm text-xs"
-                  >
-                    {/* Status Bar */}
-                    <div className="bg-maroon-950/5 border-b border-gold-500/10 px-3 py-2 flex flex-wrap items-center justify-between gap-2 text-[11px]">
-                      <div>
-                        <span className="text-ink/55">Txn ID: </span>
-                        <span className="font-mono font-bold">{receipt.transactionId}</span>
-                      </div>
-                      <div>
-                        <span className="text-ink/55">Date: </span>
-                        <span className="font-semibold">{receipt.paymentDate}</span>
-                      </div>
-                      <span className="font-bold text-green-700 uppercase tracking-wide text-[9px] bg-green-100 px-2 py-0.5 rounded">
-                        ✓ Paid (PhonePe)
+            /* Booking History & Volunteer Passes Tab */
+            <div className="space-y-4 max-h-96 overflow-y-auto pr-1">
+              
+              {/* Volunteer Passes Section if any */}
+              {(() => {
+                let volunteerPasses = [];
+                try {
+                  const stored = localStorage.getItem("temple_volunteer_passes");
+                  if (stored) volunteerPasses = JSON.parse(stored);
+                } catch (e) {}
+
+                if (volunteerPasses.length === 0) return null;
+
+                return (
+                  <div className="space-y-2 border-b border-gold-500/20 pb-3">
+                    <h4 className="font-bold text-maroon-900 text-xs flex items-center justify-between">
+                      <span>🚩 Registered Volunteer Passes ({volunteerPasses.length})</span>
+                      <span className="text-[10px] text-green-700 font-bold bg-green-50 px-2 py-0.5 rounded border border-green-200">
+                        Official Passes
                       </span>
-                    </div>
+                    </h4>
 
-                    {/* Items */}
-                    <div className="divide-y divide-gold-500/10 px-3">
-                      {receipt.items.map((ticket, i) => (
-                        <div key={i} className="py-2.5 flex items-center justify-between gap-2">
-                          <div className="space-y-0.5">
+                    {volunteerPasses.map((pass) => (
+                      <div
+                        key={pass.regId}
+                        className="bg-white border border-gold-500/30 rounded-lg p-2.5 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-2 text-xs"
+                      >
+                        <div className="flex items-center gap-2.5 w-full sm:w-auto">
+                          <img
+                            src={pass.photoUrl}
+                            alt={pass.fullName}
+                            className="w-10 h-12 rounded object-cover border border-maroon-900 shrink-0"
+                          />
+                          <div className="space-y-0.5 leading-tight">
                             <div className="flex items-center gap-1.5">
-                              <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-green-100 text-green-800">
-                                {ticket.bookingType === "seva" ? "Seva" : ticket.bookingType === "donation" ? "Donation" : "Stay"}
+                              <span className="font-mono font-bold text-maroon-900 text-[11px]">{pass.regId}</span>
+                              <span className="text-[8px] bg-green-100 text-green-800 font-bold px-1 rounded">
+                                Volunteer
                               </span>
-                              <span className="font-bold text-maroon-900">{ticket.name}</span>
                             </div>
-                            <p className="text-[10px] text-ink/65">
-                              Devotee: <strong>{ticket.devoteeName}</strong> • Date: <strong>{ticket.date}</strong>
-                            </p>
+                            <h5 className="font-bold text-black text-xs">{pass.fullName}</h5>
+                            <p className="text-[10px] text-ink/65 truncate max-w-[200px]">{pass.yagam}</p>
                           </div>
-                          <span className="font-bold text-dev-orange text-xs">{ticket.price}</span>
                         </div>
-                      ))}
-                    </div>
 
-                    {/* Footer */}
-                    <div className="bg-maroon-900/5 px-3 py-2 border-t border-gold-500/10 flex flex-wrap items-center justify-between gap-2 text-xs">
-                      <div>
-                        <span className="font-semibold text-ink/70">Total Paid: </span>
-                        <span className="font-extrabold text-maroon-900 text-sm">
-                          ₹{receipt.amount.toLocaleString("en-IN")}
+                        <button
+                          onClick={() => onOpenVolunteer && onOpenVolunteer(pass)}
+                          className="w-full sm:w-auto bg-maroon-900 hover:bg-maroon-950 text-gold-400 font-bold px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm flex items-center justify-center gap-1 cursor-pointer shrink-0 border border-gold-500/30"
+                        >
+                          🖨️ Download / Print ID Pass
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
+
+              {/* Seva / Stay Booking Receipts */}
+              {bookings.length === 0 ? (
+                <div className="text-center py-6 space-y-2">
+                  <div className="text-ink/30 text-3xl">🎟️</div>
+                  <h3 className="font-display text-sm font-bold text-maroon-900">No Ticket Receipts</h3>
+                  <p className="text-xs text-ink/70 max-w-xs mx-auto">
+                    Completed Seva, Darshan and Stay receipts will be listed here.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <h4 className="font-bold text-maroon-900 text-xs">🎟️ Seva &amp; Darshan Booking Receipts ({bookings.length})</h4>
+                  {bookings.map((receipt) => (
+                    <div
+                      key={receipt.transactionId}
+                      className="border border-gold-500/25 bg-white rounded-lg overflow-hidden shadow-sm text-xs"
+                    >
+                      {/* Status Bar */}
+                      <div className="bg-maroon-950/5 border-b border-gold-500/10 px-3 py-2 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                        <div>
+                          <span className="text-ink/55">Txn ID: </span>
+                          <span className="font-mono font-bold">{receipt.transactionId}</span>
+                        </div>
+                        <div>
+                          <span className="text-ink/55">Date: </span>
+                          <span className="font-semibold">{receipt.paymentDate}</span>
+                        </div>
+                        <span className="font-bold text-green-700 uppercase tracking-wide text-[9px] bg-green-100 px-2 py-0.5 rounded">
+                          ✓ Paid (PhonePe)
                         </span>
                       </div>
 
-                      <button
-                        onClick={() => onViewReceipt && onViewReceipt(receipt)}
-                        className="bg-maroon-900 text-gold-400 hover:bg-maroon-950 font-bold px-3 py-1.5 rounded-lg text-xs transition-colors border border-gold-500/40 shadow-sm flex items-center gap-1.5 cursor-pointer"
-                      >
-                        🖨️ Download / Print Ticket Receipt
-                      </button>
+                      {/* Items */}
+                      <div className="divide-y divide-gold-500/10 px-3">
+                        {receipt.items.map((ticket, i) => (
+                          <div key={i} className="py-2.5 flex items-center justify-between gap-2">
+                            <div className="space-y-0.5">
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-green-100 text-green-800">
+                                  {ticket.bookingType === "seva" ? "Seva" : ticket.bookingType === "donation" ? "Donation" : "Stay"}
+                                </span>
+                                <span className="font-bold text-maroon-900">{ticket.name}</span>
+                              </div>
+                              <p className="text-[10px] text-ink/65">
+                                Devotee: <strong>{ticket.devoteeName}</strong> • Date: <strong>{ticket.date}</strong>
+                              </p>
+                            </div>
+                            <span className="font-bold text-dev-orange text-xs">{ticket.price}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Footer */}
+                      <div className="bg-maroon-900/5 px-3 py-2 border-t border-gold-500/10 flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <div>
+                          <span className="font-semibold text-ink/70">Total Paid: </span>
+                          <span className="font-extrabold text-maroon-900 text-sm">
+                            ₹{receipt.amount.toLocaleString("en-IN")}
+                          </span>
+                        </div>
+
+                        <button
+                          onClick={() => onViewReceipt && onViewReceipt(receipt)}
+                          className="bg-maroon-900 text-gold-400 hover:bg-maroon-950 font-bold px-3 py-1.5 rounded-lg text-xs transition-colors border border-gold-500/40 shadow-sm flex items-center gap-1.5 cursor-pointer"
+                        >
+                          🖨️ Download / Print Ticket Receipt
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </div>
 
