@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import siteConfig from "../config/siteConfig";
-import GopuramMotif from "./GopuramMotif";
+import siteConfig from "../../config/siteConfig";
+import GopuramMotif from "../ui/GopuramMotif";
 
-export default function Navbar({ onSelectAboutSection }) {
+export default function Navbar({ onSelectAboutSection, onViewCart, cartCount, onLogout, userName }) {
   const [open, setOpen] = useState(false);
   const [timeStr, setTimeStr] = useState("");
   const [hoveredMenu, setHoveredMenu] = useState(null);
@@ -93,39 +93,34 @@ export default function Navbar({ onSelectAboutSection }) {
 
           {/* Right Side: Navigation Helpers */}
           <nav className="flex items-center gap-3.5 text-[9px] md:text-xs">
-            {siteConfig.utilityLinks.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                className="hover:underline flex items-center gap-1 font-semibold text-white/95"
-              >
-                {l.label === "SRISAILA TV" && (
-                  <svg className="w-3 h-3 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2">
-                    <rect x="2" y="7" width="20" height="13" rx="2" />
-                    <path d="M17 2l-5 5-5-5" />
-                  </svg>
-                )}
-                {l.label === "ENGLISH" && (
-                  <svg className="w-3 h-3 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2">
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10m0-20a15.3 15.3 0 00-4 10 15.3 15.3 0 004 10M2 12h20" />
-                  </svg>
-                )}
-                {l.label === "PRINT A TICKET" && (
-                  <svg className="w-3 h-3 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2">
-                    <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" />
-                    <path d="M6 14h12v8H6z" />
-                  </svg>
-                )}
-                {l.label === "SIGN IN / SIGN UP" && (
-                  <svg className="w-3 h-3 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2">
-                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-                )}
-                {l.label}
-              </a>
-            ))}
+            {/* Print Ticket */}
+            <a
+              href="#cart"
+              onClick={(e) => { e.preventDefault(); onViewCart && onViewCart(); }}
+              className="hover:underline flex items-center gap-1 font-semibold text-white/95"
+            >
+              <svg className="w-3 h-3 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2">
+                <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" />
+                <path d="M6 14h12v8H6z" />
+              </svg>
+              PRINT A TICKET
+            </a>
+
+            {/* Signed-in user & Sign Out */}
+            {userName && (
+              <span className="text-white/60 font-semibold text-[9px] md:text-xs">
+                🙏 {userName}
+              </span>
+            )}
+            <button
+              onClick={() => onLogout && onLogout()}
+              className="hover:underline flex items-center gap-1 font-semibold text-white/95 cursor-pointer bg-transparent border-none text-[9px] md:text-xs"
+            >
+              <svg className="w-3 h-3 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2">
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+              </svg>
+              SIGN OUT
+            </button>
           </nav>
         </div>
       </div>
@@ -137,15 +132,23 @@ export default function Navbar({ onSelectAboutSection }) {
           <div className="flex items-center justify-between gap-4">
             {/* Logo & Identity */}
             <a href="#home" className="flex items-center gap-2.5">
-              {/* White Circular Badge Logo */}
-              <div className="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-md p-1 shrink-0">
-                <GopuramMotif className="w-8 h-8 text-dev-orange" />
+              {/* Circular Emblem Badge Logo */}
+              <div className="w-11 h-11 rounded-full bg-black/40 border border-gold-400 flex items-center justify-center shadow-md p-0.5 shrink-0 overflow-hidden">
+                <img src="/temple_logo.svg" alt="Temple Logo" className="w-full h-full object-contain" />
               </div>
               <div className="leading-tight">
-                <div className="font-display font-bold text-sm sm:text-base md:text-lg text-white tracking-wide">
+                <div
+                  lang="te"
+                  className="font-bold text-sm sm:text-base md:text-lg text-white tracking-wide"
+                  style={{ fontFamily: "'Tiro Telugu', 'Noto Sans Telugu', serif" }}
+                >
                   {siteConfig.templeName}
                 </div>
-                <div className="text-[10px] md:text-xs text-white/80 font-semibold mt-0.5">
+                <div
+                  lang="te"
+                  className="text-[10px] md:text-xs text-white/80 font-semibold mt-0.5"
+                  style={{ fontFamily: "'Noto Sans Telugu', 'Tiro Telugu', serif" }}
+                >
                   {siteConfig.place}
                 </div>
               </div>
@@ -157,13 +160,22 @@ export default function Navbar({ onSelectAboutSection }) {
               <a href="#shop" className="hover:text-white/80 transition-colors">Shop</a>
               
               {/* Shopping Cart */}
-              <a href="#cart" aria-label="Cart" className="hover:text-white/80 transition-colors">
-                <svg className="w-4 h-4 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2">
+              <button
+                onClick={onViewCart}
+                aria-label="Cart"
+                className="hover:text-white/80 transition-colors relative flex items-center p-1.5 focus:outline-none text-white"
+              >
+                <svg className="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2">
                   <circle cx="9" cy="21" r="1" />
                   <circle cx="20" cy="21" r="1" />
                   <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
                 </svg>
-              </a>
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1.5 bg-red-600 text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center border border-dev-orange animate-bounce">
+                    {cartCount}
+                  </span>
+                )}
+              </button>
 
               {/* Search */}
               <a href="#search" aria-label="Search" className="hover:text-white/80 transition-colors">
@@ -176,13 +188,22 @@ export default function Navbar({ onSelectAboutSection }) {
 
             {/* Mobile Actions and Hamburger Toggle */}
             <div className="md:hidden flex items-center gap-3">
-              <a href="#shop" aria-label="Shop">
-                <svg className="w-4 h-4 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2">
+              <button
+                onClick={onViewCart}
+                aria-label="Cart"
+                className="hover:text-white/80 transition-colors relative p-1.5 focus:outline-none text-white"
+              >
+                <svg className="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2">
                   <circle cx="9" cy="21" r="1" />
                   <circle cx="20" cy="21" r="1" />
                   <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
                 </svg>
-              </a>
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center border border-dev-orange animate-bounce">
+                    {cartCount}
+                  </span>
+                )}
+              </button>
               <a href="#search" aria-label="Search">
                 <svg className="w-4 h-4 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2">
                   <circle cx="11" cy="11" r="8" />

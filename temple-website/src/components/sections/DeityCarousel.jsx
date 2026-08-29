@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import mallikarjunaImg from "../assets/mallikarjuna_swamy.png";
-import bhramarambaImg from "../assets/bhramaramba_devi.png";
-import ramalingeswaraImg from "../assets/ramalingeswara_swamy.png";
-import durgaImg from "../assets/durga_bhavani.png";
+import mallikarjunaImg from "../../assets/mallikarjuna_swamy.png";
+import bhramarambaImg from "../../assets/bhramaramba_devi.png";
+import ramalingeswaraImg from "../../assets/ramalingeswara_swamy.png";
+import durgaImg from "../../assets/durga_bhavani.png";
 
 export default function DeityCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);

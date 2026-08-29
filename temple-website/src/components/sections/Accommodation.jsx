@@ -1,7 +1,7 @@
-import siteConfig from "../config/siteConfig";
-import SectionHeading from "./SectionHeading";
+import siteConfig from "../../config/siteConfig";
+import SectionHeading from "../ui/SectionHeading";
 
-export default function Accommodation() {
+export default function Accommodation({ onBook }) {
   return (
     <section id="accommodation" className="bg-transparent py-16 md:py-24">
       <div className="max-w-5xl mx-auto px-4">
@@ -17,7 +17,10 @@ export default function Accommodation() {
                 <p className="text-sm text-ink/70 leading-snug flex-1">{a.desc}</p>
                 <div className="flex items-center justify-between pt-3 border-t border-dev-blue/10">
                   <span className="text-dev-orange font-semibold">{a.price}</span>
-                  <button className="text-xs uppercase tracking-widest text-dev-blue hover:text-dev-orange transition-colors font-bold">
+                  <button
+                    onClick={() => onBook(a)}
+                    className="text-xs uppercase tracking-widest bg-dev-blue/5 hover:bg-dev-blue hover:text-white px-3 py-1.5 rounded text-dev-blue transition-colors font-bold border border-dev-blue/20"
+                  >
                     Reserve →
                   </button>
                 </div>

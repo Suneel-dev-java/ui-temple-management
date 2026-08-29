@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { mockApi } from "../services/mockApi";
+import { mockApi } from "../../services/mockApi";
 
 export default function TempleInfoPage({ sectionId, onClose }) {
   const [data, setData] = useState(null);
@@ -137,9 +137,10 @@ export default function TempleInfoPage({ sectionId, onClose }) {
           <div className="grid lg:grid-cols-3 gap-10 items-start">
             
             {/* Left/Center Column: Text & Photo Gallery */}
-            <div className="lg:col-span-2 space-y-8">
-              <div className="space-y-3">
-                <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-dev-orange bg-dev-orange/10 px-3 py-1 rounded-full">
+            <div className="lg:col-span-2 space-y-6">
+              {/* Title Header Card */}
+              <div className="space-y-3 bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-dev-blue/5 shadow-sm">
+                <span className="inline-block text-[10px] md:text-xs font-bold uppercase tracking-widest text-dev-orange bg-dev-orange/10 px-3 py-1 rounded-full">
                   ఆలయ సమాచారం (About the Temple)
                 </span>
                 <h1 className="font-display text-2xl sm:text-3.5xl md:text-4xl text-dev-blue font-bold tracking-wide">
@@ -159,8 +160,8 @@ export default function TempleInfoPage({ sectionId, onClose }) {
                 ))}
               </div>
 
-              {/* Ornate Image Gallery */}
-              <div className="space-y-4">
+              {/* Ornate Image Gallery Card */}
+              <div className="space-y-4 bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-dev-blue/5 shadow-sm">
                 <h3 className="font-display text-lg font-bold text-dev-blue border-b border-gold-500/20 pb-2 flex items-center gap-2">
                   <svg className="w-5 h-5 text-dev-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
