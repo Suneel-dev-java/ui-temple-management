@@ -39,16 +39,16 @@ export default function Footer({ onSelectSection }) {
               <span className="text-[9px] text-sandal/40">Secured</span>
             </div>
             <div className="flex items-center gap-2 bg-sandal/5 border border-sandal/10 rounded px-2.5 py-1">
-              <span className="text-[10px] text-gold-400">🏛️ AP Endowments Act 1987</span>
-              <span className="text-[9px] text-sandal/40">Approved</span>
+              <span className="text-[10px] text-gold-400">🏛️ Temple Trust Registered</span>
+              <span className="text-[9px] text-sandal/40">Verified</span>
             </div>
             <div className="flex items-center gap-2 bg-sandal/5 border border-sandal/10 rounded px-2.5 py-1">
-              <span className="text-[10px] text-blue-400">🌐 GIGW</span>
-              <span className="text-[9px] text-sandal/40">Compliant</span>
+              <span className="text-[10px] text-blue-400">🌐 Official Portal</span>
+              <span className="text-[9px] text-sandal/40">Secured</span>
             </div>
           </div>
           <div className="text-[11px] text-sandal/40 md:text-right max-w-xs leading-normal">
-            Administered by the Department of Endowments, Government of Andhra Pradesh.
+            Managed &amp; Administered by Sri Durga Bhavani Sameta Ramalingeswara Swamy Temple Trust, Dagadarthi.
           </div>
         </div>
       </div>

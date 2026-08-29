@@ -17,6 +17,11 @@ import CartPage from "./components/booking/CartPage";
 import PhonePeGateway from "./components/booking/PhonePeGateway";
 import ReceiptPage from "./components/booking/ReceiptPage";
 import PoojaCalendar from "./components/sections/PoojaCalendar";
+import LoginPoojaPopup from "./components/modals/LoginPoojaPopup";
+import PanchangamWidget from "./components/features/PanchangamWidget";
+import VirtualDarshanModal from "./components/features/VirtualDarshanModal";
+import EHundiModal from "./components/features/EHundiModal";
+import TravelGuideModal from "./components/features/TravelGuideModal";
 
 export default function App() {
   // Auth state — check localStorage on mount
@@ -28,6 +33,8 @@ export default function App() {
   );
 
   const [activeAboutSection, setActiveAboutSection] = useState(null);
+  const [showLoginPoojaPopup, setShowLoginPoojaPopup] = useState(false);
+  const [activeFeatureModal, setActiveFeatureModal] = useState(null); // null | 'panchangam' | 'darshan' | 'hundi' | 'travel'
 
   // Always start at home on refresh/page load
   const [currentView, setCurrentView] = useState("home");
@@ -36,6 +43,8 @@ export default function App() {
   const handleLogin = (name) => {
     setIsLoggedIn(true);
     setUserName(name || "");
+    // Trigger the Pooja Calendar Popup on login
+    setShowLoginPoojaPopup(true);
     // Restore saved journey if available
     const savedView = localStorage.getItem("temple_journey_view");
     const savedSection = localStorage.getItem("temple_journey_section");
@@ -150,6 +159,12 @@ export default function App() {
     setCurrentView("receipt");
   };
 
+  const goHome = () => {
+    setCurrentView("home");
+    setActiveAboutSection(null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div 
       className="min-h-screen font-body relative"
@@ -165,19 +180,22 @@ export default function App() {
           if (section === "calendar") {
             setActiveAboutSection(null);
             setCurrentView("calendar");
-            window.scrollTo(0, 0);
+            window.scrollTo({ top: 0, behavior: "smooth" });
           } else {
             setActiveAboutSection(section);
             setCurrentView(section === null ? "home" : "about");
+            window.scrollTo({ top: 0, behavior: "smooth" });
           }
         }} 
         onViewCart={() => {
           setCurrentView("cart");
           setActiveAboutSection(null);
+          window.scrollTo({ top: 0, behavior: "smooth" });
         }}
         cartCount={cart.length}
         onLogout={handleLogout}
         userName={userName}
+        onOpenFeature={(feature) => setActiveFeatureModal(feature)}
       />
       
       {currentView === "cart" ? (
@@ -186,22 +204,27 @@ export default function App() {
           bookings={bookings}
           onRemoveItem={handleRemoveFromCart}
           onCheckout={handleCheckout}
-          onClose={() => setCurrentView("home")}
+          onClose={goHome}
+          onViewReceipt={(receipt) => {
+            setLastReceipt(receipt);
+            setCurrentView("receipt");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
         />
       ) : currentView === "phonepe" ? (
         <PhonePeGateway 
           paymentInfo={activePayment}
           onPaymentSuccess={handlePaymentSuccess}
-          onPaymentCancel={() => setCurrentView("cart")}
+          onPaymentCancel={() => { setCurrentView("cart"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
         />
       ) : currentView === "receipt" ? (
         <ReceiptPage 
           receipt={lastReceipt}
-          onClose={() => setCurrentView("home")}
+          onClose={goHome}
         />
       ) : currentView === "calendar" ? (
         <PoojaCalendar 
-          onClose={() => setCurrentView("home")}
+          onClose={goHome}
           onBookPooja={(pooja) => setBookingModalItem({ item: pooja, type: "seva" })}
           onDonatePooja={handleAddDonationToCart}
         />
@@ -209,7 +232,7 @@ export default function App() {
         <>
           <Ticker />
           <DeityCarousel />
-          <QuickLinks />
+          <QuickLinks onOpenFeature={(feature) => setActiveFeatureModal(feature)} />
           <About />
           <Sevas onBook={(seva) => setBookingModalItem({ item: seva, type: "seva" })} />
           <Accommodation onBook={(room) => setBookingModalItem({ item: room, type: "stay" })} />
@@ -218,7 +241,7 @@ export default function App() {
       ) : (
         <TempleInfoPage
           sectionId={activeAboutSection}
-          onClose={() => { setActiveAboutSection(null); setCurrentView("home"); }}
+          onClose={goHome}
         />
       )}
 
@@ -233,6 +256,50 @@ export default function App() {
           onClose={() => setBookingModalItem(null)}
           onAddToCart={handleAddToCart}
         />
+      )}
+
+      {/* Special Pooja Calendar Login Popup */}
+      {showLoginPoojaPopup && (
+        <LoginPoojaPopup
+          onClose={() => setShowLoginPoojaPopup(false)}
+          onBookPooja={(pooja) => setBookingModalItem({ item: pooja, type: "seva" })}
+          onDonatePooja={handleAddDonationToCart}
+          onViewCalendar={() => {
+            setActiveAboutSection(null);
+            setCurrentView("calendar");
+            window.scrollTo(0, 0);
+          }}
+        />
+      )}
+
+      {/* Feature Modals */}
+      {activeFeatureModal === "panchangam" && (
+        <PanchangamWidget onClose={() => setActiveFeatureModal(null)} />
+      )}
+
+      {activeFeatureModal === "darshan" && (
+        <VirtualDarshanModal
+          onClose={() => setActiveFeatureModal(null)}
+          onBookSeva={() => {
+            setActiveFeatureModal(null);
+            setCurrentView("home");
+            setTimeout(() => {
+              const el = document.getElementById("sevas");
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            }, 200);
+          }}
+        />
+      )}
+
+      {activeFeatureModal === "hundi" && (
+        <EHundiModal
+          onClose={() => setActiveFeatureModal(null)}
+          onAddToCart={handleAddToCart}
+        />
+      )}
+
+      {activeFeatureModal === "travel" && (
+        <TravelGuideModal onClose={() => setActiveFeatureModal(null)} />
       )}
     </div>
   );

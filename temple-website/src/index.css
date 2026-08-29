@@ -38,3 +38,25 @@ h1, h2, h3, h4, .font-display {
     scroll-behavior: auto !important;
   }
 }
+
+/* Print Styles for Official Ticket Receipt */
+@media print {
+  header, footer, nav, .no-print, button, #chant-player, [role="navigation"] {
+    display: none !important;
+  }
+
+  html, body, #root {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    width: 100% !important;
+  }
+
+  @page {
+    margin: 8mm;
+    size: A4 portrait;
+  }
+}
+

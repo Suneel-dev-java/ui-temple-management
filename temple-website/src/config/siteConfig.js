@@ -29,6 +29,7 @@ const siteConfig = {
       subItems: [
         { label: "The Temple", id: "temple" },
         { label: "The Temple Story", id: "story" },
+        { label: "Pilgrim Travel Guide", id: "travel" },
         { label: "General Information", id: "general" },
       ]
     },
@@ -37,14 +38,15 @@ const siteConfig = {
       href: "#sevas",
       subItems: [
         { label: "Overview", id: "sevas_overview" },
-        { label: "Darshanam", id: "sevas_darshanam" },
-        { label: "Pratyaksha Seva", id: "sevas_pratyaksha" },
-        { label: "Paroksha Seva", id: "sevas_paroksha" },
+        { label: "360° Virtual Darshan", id: "darshan" },
+        { label: "Today's Panchangam", id: "panchangam" },
         { label: "Yearly Pooja Calendar", id: "calendar" },
+        { label: "Pratyaksha Seva", id: "sevas_pratyaksha" },
       ]
     },
-    { label: "Donations", href: "#donations" },
+    { label: "Panchangam", href: "#panchangam" },
     { label: "E-Hundi", href: "#ehundi" },
+    { label: "Travel Guide", href: "#travel" },
     {
       label: "Quick Booking",
       href: "#quick-booking",
