@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function CartPage({ cart, bookings, onRemoveItem, onCheckout, onClose }) {
+export default function CartPage({ cart, bookings, onRemoveItem, onCheckout, onClose, onViewReceipt }) {
   const [activeTab, setActiveTab] = useState("cart"); // "cart" | "history"
   const [agreedTerms, setAgreedTerms] = useState(false);
 
@@ -17,21 +17,22 @@ export default function CartPage({ cart, bookings, onRemoveItem, onCheckout, onC
   const total = calculateTotal();
 
   return (
-    <section className="max-w-4xl mx-auto px-4 py-8 text-ink">
-      <div className="bg-sandal/90 backdrop-blur-md border-2 border-gold-500 rounded-2xl shadow-xl overflow-hidden">
+    <section className="max-w-2xl mx-auto px-3 py-4 text-ink min-h-[calc(100vh-140px)] flex items-center justify-center">
+      <div className="w-full bg-sandal/95 backdrop-blur-md border border-gold-500/60 rounded-xl shadow-2xl overflow-hidden">
+        
         {/* Header */}
-        <div className="bg-maroon-900 px-6 py-5 border-b border-gold-500 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <h2 className="font-display text-2xl text-gold-400 font-bold">Devotee Desk</h2>
-            <span className="bg-gold-500/20 text-gold-400 text-xs px-2 py-0.5 rounded border border-gold-500/30">
+        <div className="bg-maroon-900 px-4 py-3 border-b border-gold-500/40 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <h2 className="font-display text-lg sm:text-xl text-gold-400 font-bold">Devotee Desk</h2>
+            <span className="bg-gold-500/20 text-gold-400 text-[10px] px-2 py-0.5 rounded border border-gold-500/30">
               Portal
             </span>
           </div>
           <button
             onClick={onClose}
-            className="text-gold-400 hover:text-white transition-colors text-sm font-semibold flex items-center gap-1 bg-maroon-950/40 hover:bg-maroon-950 px-3 py-1.5 rounded border border-gold-500/25"
+            className="text-gold-400 hover:text-white transition-colors text-xs font-semibold flex items-center gap-1 bg-maroon-950/60 hover:bg-maroon-950 px-2.5 py-1 rounded border border-gold-500/25"
           >
-            &larr; Back to Home
+            ← Back to Home
           </button>
         </div>
 
@@ -39,7 +40,7 @@ export default function CartPage({ cart, bookings, onRemoveItem, onCheckout, onC
         <div className="flex border-b border-gold-500/20 bg-maroon-950/15">
           <button
             onClick={() => setActiveTab("cart")}
-            className={`flex-1 py-3.5 text-center text-sm font-bold uppercase tracking-wider transition-colors border-r border-gold-500/10 ${
+            className={`flex-1 py-2.5 text-center text-xs font-bold uppercase tracking-wider transition-colors border-r border-gold-500/10 ${
               activeTab === "cart"
                 ? "bg-sandal text-maroon-900 border-b-2 border-b-maroon-800"
                 : "text-ink/60 hover:text-ink hover:bg-sandal/40"
@@ -49,57 +50,58 @@ export default function CartPage({ cart, bookings, onRemoveItem, onCheckout, onC
           </button>
           <button
             onClick={() => setActiveTab("history")}
-            className={`flex-1 py-3.5 text-center text-sm font-bold uppercase tracking-wider transition-colors ${
+            className={`flex-1 py-2.5 text-center text-xs font-bold uppercase tracking-wider transition-colors ${
               activeTab === "history"
                 ? "bg-sandal text-maroon-900 border-b-2 border-b-maroon-800"
                 : "text-ink/60 hover:text-ink hover:bg-sandal/40"
             }`}
           >
-            Booking History / Receipts ({bookings.length})
+            History / Receipts ({bookings.length})
           </button>
         </div>
 
         {/* Tab Content */}
-        <div className="p-6">
+        <div className="p-4 sm:p-5">
           {activeTab === "cart" ? (
             cart.length === 0 ? (
-              <div className="text-center py-12 space-y-4">
-                <div className="text-ink/40 text-5xl">🛒</div>
-                <h3 className="font-display text-xl font-bold text-maroon-900">Your Cart is Empty</h3>
-                <p className="text-sm text-ink/75 max-w-sm mx-auto">
-                  You haven't added any sevas or accommodation reservations to your cart yet.
+              <div className="text-center py-8 space-y-3">
+                <div className="text-ink/30 text-4xl">🛒</div>
+                <h3 className="font-display text-base font-bold text-maroon-900">Your Cart is Empty</h3>
+                <p className="text-xs text-ink/70 max-w-xs mx-auto">
+                  You haven't added any sevas or accommodation reservations yet.
                 </p>
                 <button
                   onClick={onClose}
-                  className="bg-maroon-900 text-gold-400 hover:bg-maroon-950 px-6 py-2.5 rounded-lg text-sm font-bold transition-colors border border-gold-500 inline-block mt-2"
+                  className="bg-maroon-900 text-gold-400 hover:bg-maroon-950 px-4 py-2 rounded-lg text-xs font-bold transition-colors border border-gold-500/40 inline-block mt-1"
                 >
-                  Explore Sevas & Stays
+                  Explore Sevas &amp; Stays
                 </button>
               </div>
             ) : (
-              <div className="space-y-6">
-                <div className="space-y-4">
+              <div className="space-y-4">
+                {/* Items List */}
+                <div className="space-y-2.5 max-h-72 overflow-y-auto pr-1">
                   {cart.map((item, index) => (
                     <div
-                      key={item.token}
-                      className="bg-white/95 border border-gold-500/20 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden"
+                      key={item.token || index}
+                      className="bg-white border border-gold-500/20 rounded-lg p-3 shadow-sm hover:shadow transition-shadow relative overflow-hidden"
                     >
                       {/* Decorative Side Tab */}
                       <div
-                        className={`absolute left-0 top-0 bottom-0 w-2 ${
+                        className={`absolute left-0 top-0 bottom-0 w-1.5 ${
                           item.bookingType === "seva"
                             ? "bg-maroon-700"
                             : item.bookingType === "donation"
                             ? "bg-green-700"
                             : "bg-dev-blue"
                         }`}
-                      ></div>
+                      />
 
-                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pl-3">
-                        <div className="space-y-2 flex-1">
-                          <div className="flex flex-wrap items-center gap-2">
+                      <div className="flex items-center justify-between gap-3 pl-2">
+                        <div className="space-y-1 flex-1 min-w-0">
+                          <div className="flex flex-wrap items-center gap-1.5">
                             <span
-                              className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded text-white ${
+                              className={`text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded text-white ${
                                 item.bookingType === "seva"
                                   ? "bg-maroon-800"
                                   : item.bookingType === "donation"
@@ -113,57 +115,34 @@ export default function CartPage({ cart, bookings, onRemoveItem, onCheckout, onC
                                 ? "Yagam Donation"
                                 : "Stay Booking"}
                             </span>
-                            <span className="text-[10px] font-mono bg-ink/5 px-2 py-0.5 rounded text-ink/70">
+                            <span className="text-[9px] font-mono bg-ink/5 px-1.5 py-0.5 rounded text-ink/70">
                               {item.token}
                             </span>
                           </div>
 
-                          <h4 className="font-display text-lg font-bold text-maroon-900">
+                          <h4 className="font-display text-sm font-bold text-maroon-900 truncate">
                             {item.name}
                           </h4>
 
-                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-2 gap-x-4 text-xs">
-                            <div>
-                              <span className="text-ink/50 block">Devotee/Guest</span>
-                              <span className="font-semibold">{item.devoteeName}</span>
-                            </div>
-                            {item.bookingType === "seva" ? (
-                              <>
-                                <div>
-                                  <span className="text-ink/50 block">Gotram</span>
-                                  <span className="font-semibold">{item.gotram}</span>
-                                </div>
-                                <div>
-                                  <span className="text-ink/50 block">Rashi/Star</span>
-                                  <span className="font-semibold">{item.rashiStar}</span>
-                                </div>
-                              </>
-                            ) : item.bookingType === "donation" ? (
-                              <div>
-                                <span className="text-ink/50 block">Purpose</span>
-                                <span className="font-semibold">Yagam Welfare sankalpam</span>
-                              </div>
-                            ) : (
-                              <div>
-                                <span className="text-ink/50 block">Guests count</span>
-                                <span className="font-semibold">{item.guests} Person(s)</span>
-                              </div>
+                          <div className="flex flex-wrap items-center gap-x-3 text-[11px] text-ink/75">
+                            <span>
+                              <strong className="font-semibold text-ink/90">{item.devoteeName}</strong>
+                            </span>
+                            {item.bookingType === "seva" && item.gotram && (
+                              <span>Gotram: <strong>{item.gotram}</strong></span>
                             )}
-                            <div>
-                              <span className="text-ink/50 block">
-                                {item.bookingType === "donation" ? "Season / Masam" : "Date of Seva/Check-in"}
-                              </span>
-                              <span className="font-semibold">{item.date}</span>
-                            </div>
+                            {item.date && (
+                              <span>Date: <strong>{item.date}</strong></span>
+                            )}
                           </div>
                         </div>
 
                         {/* Price & Action */}
-                        <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center border-t md:border-t-0 pt-3 md:pt-0 border-ink/10 gap-3 min-w-[120px]">
-                          <span className="text-lg font-bold text-dev-orange">{item.price}</span>
+                        <div className="flex flex-col items-end gap-1 shrink-0">
+                          <span className="text-sm font-bold text-dev-orange">{item.price}</span>
                           <button
                             onClick={() => onRemoveItem(index)}
-                            className="text-xs font-bold text-red-700 hover:text-red-950 flex items-center gap-1 hover:bg-red-50 px-2.5 py-1 rounded transition-colors"
+                            className="text-[10px] font-bold text-red-700 hover:text-red-950 hover:bg-red-50 px-1.5 py-0.5 rounded transition-colors"
                           >
                             Remove
                           </button>
@@ -174,49 +153,47 @@ export default function CartPage({ cart, bookings, onRemoveItem, onCheckout, onC
                 </div>
 
                 {/* Checkout Summary */}
-                <div className="bg-maroon-800/5 border-2 border-dashed border-gold-500/30 rounded-xl p-5 flex flex-col gap-4 mt-6">
-                  {/* Final Declarations Notice */}
-                  <div className="bg-white/90 border border-gold-500/20 rounded-lg p-4 text-xs space-y-2 text-left">
-                    <span className="font-bold text-maroon-900 uppercase tracking-wider block border-b border-gold-500/10 pb-1">
-                      Security & Compliance Agreement (భద్రత & ఆలయ నిబంధనల అంగీకారం)
+                <div className="bg-maroon-900/5 border border-gold-500/30 rounded-xl p-3.5 space-y-3">
+                  {/* Security & Compliance Agreement */}
+                  <div className="bg-white/90 border border-gold-500/20 rounded-lg p-3 text-xs space-y-1.5">
+                    <span className="font-bold text-maroon-900 uppercase tracking-wider text-[10px] block border-b border-gold-500/10 pb-1">
+                      Security Agreement (భద్రత &amp; నిబంధనల అంగీకారం)
                     </span>
-                    <p className="text-ink/80 leading-snug">
-                      నేను సమర్పించిన భక్తుల వివరాలన్నీ సరైనవని ధృవీకరిస్తున్నాను. ఆలయ దుస్తుల నియమ నిబంధనలకు (Traditional Dress Code), బదిలీ చేయలేని సేవా ప్రవేశ షరతులకు నేను కట్టుబడి ఉంటానని అంగీకరిస్తున్నాను.
+                    <p className="text-ink/80 text-[11px] leading-snug">
+                      నేను సమర్పించిన వివరాలన్నీ సరైనవని ధృవీకరిస్తున్నాను. ఆలయ సాంప్రదాయ దుస్తుల నియమావళికి కట్టుబడి ఉంటాను.
                     </p>
-                    <label className="flex items-center gap-2 cursor-pointer select-none font-bold text-maroon-900 mt-2">
+                    <label className="flex items-center gap-2 cursor-pointer select-none font-bold text-maroon-900 text-[11px] pt-1">
                       <input
                         type="checkbox"
                         checked={agreedTerms}
                         onChange={(e) => setAgreedTerms(e.target.checked)}
-                        className="accent-maroon-800 w-4 h-4"
+                        className="accent-maroon-800 w-3.5 h-3.5"
                       />
-                      నేను దేవస్థానం సేవా నియమాలను, రద్దు నిబంధనలను పూర్తిగా అంగీకరిస్తున్నాను *
+                      దేవస్థానం నియమాలను పూర్తిగా అంగీకరిస్తున్నాను *
                     </label>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2 border-t border-gold-500/10">
+                  {/* Summary & Checkout Row */}
+                  <div className="flex items-center justify-between gap-3 pt-1">
                     <div>
-                      <span className="text-xs uppercase tracking-wider text-ink/60 font-bold">
-                        Order Summary
+                      <span className="text-[10px] uppercase tracking-wider text-ink/60 font-bold block">
+                        Total Amount
                       </span>
-                      <div className="text-2xl font-black text-maroon-900 mt-1">
-                        Total: ₹{total.toLocaleString("en-IN")}
+                      <div className="text-xl font-black text-maroon-900">
+                        ₹{total.toLocaleString("en-IN")}
                       </div>
-                      <span className="text-xs text-ink/70">
-                        All online transactions are secured and include all seva charges.
-                      </span>
                     </div>
 
                     <button
                       onClick={() => onCheckout(total)}
                       disabled={!agreedTerms}
-                      className={`font-bold px-8 py-3 rounded-lg text-base shadow-md transition-all border-b-2 ${
+                      className={`font-bold px-5 py-2 rounded-lg text-xs shadow transition-all border-b-2 ${
                         agreedTerms
-                          ? "bg-dev-orange text-white hover:bg-dev-orange/90 hover:shadow-lg border-dev-orange/60 cursor-pointer"
+                          ? "bg-dev-orange text-white hover:bg-dev-orange/90 border-dev-orange/60 cursor-pointer"
                           : "bg-gray-300 text-gray-500 border-gray-400/40 cursor-not-allowed"
                       }`}
                     >
-                      Proceed to Pay (₹{total.toLocaleString("en-IN")}) &rarr;
+                      Proceed to Pay (₹{total.toLocaleString("en-IN")}) →
                     </button>
                   </div>
                 </div>
@@ -225,106 +202,70 @@ export default function CartPage({ cart, bookings, onRemoveItem, onCheckout, onC
           ) : (
             /* Booking History Tab */
             bookings.length === 0 ? (
-              <div className="text-center py-12 space-y-4">
-                <div className="text-ink/40 text-5xl">🎟️</div>
-                <h3 className="font-display text-xl font-bold text-maroon-900">No Past Bookings</h3>
-                <p className="text-sm text-ink/75 max-w-sm mx-auto">
-                  You don't have any completed bookings or receipts registered under this device session.
+              <div className="text-center py-8 space-y-3">
+                <div className="text-ink/30 text-4xl">🎟️</div>
+                <h3 className="font-display text-base font-bold text-maroon-900">No Past Bookings</h3>
+                <p className="text-xs text-ink/70 max-w-xs mx-auto">
+                  You don't have any completed bookings or receipts yet.
                 </p>
               </div>
             ) : (
-              <div className="space-y-6">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-ink/65 mb-2">
-                  Completed Transactions
-                </h3>
+              <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
                 {bookings.map((receipt) => (
                   <div
                     key={receipt.transactionId}
-                    className="border border-gold-500/25 bg-white/95 rounded-xl overflow-hidden shadow-sm"
+                    className="border border-gold-500/25 bg-white rounded-lg overflow-hidden shadow-sm text-xs"
                   >
-                    {/* Receipt Status Bar */}
-                    <div className="bg-maroon-950/5 border-b border-gold-500/10 px-4 py-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+                    {/* Status Bar */}
+                    <div className="bg-maroon-950/5 border-b border-gold-500/10 px-3 py-2 flex flex-wrap items-center justify-between gap-2 text-[11px]">
                       <div>
-                        <span className="text-ink/55">Transaction ID: </span>
-                        <span className="font-mono font-bold text-ink">{receipt.transactionId}</span>
+                        <span className="text-ink/55">Txn ID: </span>
+                        <span className="font-mono font-bold">{receipt.transactionId}</span>
                       </div>
                       <div>
-                        <span className="text-ink/55">Paid on: </span>
+                        <span className="text-ink/55">Date: </span>
                         <span className="font-semibold">{receipt.paymentDate}</span>
                       </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-green-600 inline-block"></span>
-                        <span className="font-bold text-green-700 uppercase tracking-wide text-[10px]">
-                          Success (PhonePe)
-                        </span>
-                      </div>
+                      <span className="font-bold text-green-700 uppercase tracking-wide text-[9px] bg-green-100 px-2 py-0.5 rounded">
+                        ✓ Paid (PhonePe)
+                      </span>
                     </div>
 
-                    {/* Booking Items List */}
-                    <div className="divide-y divide-gold-500/10 px-5">
-                      {receipt.items.map((ticket) => (
-                        <div key={ticket.token} className="py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                          <div className="space-y-1.5 flex-1">
-                            <div className="flex items-center gap-2">
-                              <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-green-100 text-green-800">
+                    {/* Items */}
+                    <div className="divide-y divide-gold-500/10 px-3">
+                      {receipt.items.map((ticket, i) => (
+                        <div key={i} className="py-2.5 flex items-center justify-between gap-2">
+                          <div className="space-y-0.5">
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-green-100 text-green-800">
                                 {ticket.bookingType === "seva" ? "Seva" : ticket.bookingType === "donation" ? "Donation" : "Stay"}
                               </span>
-                              <span className="text-xs font-bold text-maroon-900">{ticket.name}</span>
-                              <span className="text-[10px] font-mono bg-ink/5 px-2 py-0.5 rounded text-ink/60">
-                                {ticket.token}
-                              </span>
+                              <span className="font-bold text-maroon-900">{ticket.name}</span>
                             </div>
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-ink/75">
-                              <div>
-                                <span className="text-ink/40 block">Devotee/Guest</span>
-                                <span className="font-bold text-ink">{ticket.devoteeName}</span>
-                              </div>
-                              {ticket.bookingType === "seva" ? (
-                                <>
-                                  <div>
-                                    <span className="text-ink/40 block">Gotram</span>
-                                    <span className="font-medium text-ink">{ticket.gotram}</span>
-                                  </div>
-                                  <div>
-                                    <span className="text-ink/40 block">Rashi/Star</span>
-                                    <span className="font-medium text-ink">{ticket.rashiStar}</span>
-                                  </div>
-                                </>
-                              ) : ticket.bookingType === "donation" ? (
-                                <div>
-                                  <span className="text-ink/40 block">Purpose</span>
-                                  <span className="font-medium text-ink">Yagam Welfare sankalpam</span>
-                                </div>
-                              ) : (
-                                <div>
-                                  <span className="text-ink/40 block">Guests</span>
-                                  <span className="font-bold text-ink">{ticket.guests} Pax</span>
-                                </div>
-                              )}
-                              <div>
-                                <span className="text-ink/40 block">Booking Date</span>
-                                <span className="font-semibold text-ink">{ticket.date}</span>
-                              </div>
-                            </div>
+                            <p className="text-[10px] text-ink/65">
+                              Devotee: <strong>{ticket.devoteeName}</strong> • Date: <strong>{ticket.date}</strong>
+                            </p>
                           </div>
-
-                          {/* Dynamic Printable Receipt Ticket UI */}
-                          <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center border-t md:border-t-0 pt-3 md:pt-0 border-ink/5 min-w-[120px]">
-                            <span className="text-base font-bold text-ink">{ticket.price}</span>
-                            <div className="hidden md:block text-[9px] uppercase tracking-wider text-green-700 bg-green-50 border border-green-500/20 px-2 py-0.5 rounded font-black mt-1">
-                              Confirmed
-                            </div>
-                          </div>
+                          <span className="font-bold text-dev-orange text-xs">{ticket.price}</span>
                         </div>
                       ))}
                     </div>
 
-                    {/* Receipt Footer */}
-                    <div className="bg-maroon-800/5 px-5 py-3 border-t border-gold-500/10 flex items-center justify-between">
-                      <span className="text-xs font-semibold text-ink/70">Total Amount Paid</span>
-                      <span className="text-lg font-extrabold text-maroon-900">
-                        ₹{receipt.amount.toLocaleString("en-IN")}
-                      </span>
+                    {/* Footer */}
+                    <div className="bg-maroon-900/5 px-3 py-2 border-t border-gold-500/10 flex flex-wrap items-center justify-between gap-2 text-xs">
+                      <div>
+                        <span className="font-semibold text-ink/70">Total Paid: </span>
+                        <span className="font-extrabold text-maroon-900 text-sm">
+                          ₹{receipt.amount.toLocaleString("en-IN")}
+                        </span>
+                      </div>
+
+                      <button
+                        onClick={() => onViewReceipt && onViewReceipt(receipt)}
+                        className="bg-maroon-900 text-gold-400 hover:bg-maroon-950 font-bold px-3 py-1.5 rounded-lg text-xs transition-colors border border-gold-500/40 shadow-sm flex items-center gap-1.5 cursor-pointer"
+                      >
+                        🖨️ Download / Print Ticket Receipt
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -332,6 +273,7 @@ export default function CartPage({ cart, bookings, onRemoveItem, onCheckout, onC
             )
           )}
         </div>
+
       </div>
     </section>
   );

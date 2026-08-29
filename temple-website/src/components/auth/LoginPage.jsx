@@ -1,5 +1,5 @@
 import { useState } from "react";
-import templeBg from "../../assets/temple_bg.png";
+import loginBg from "../../assets/login_bg_divine.png";
 import templeLogo from "../../assets/temple_logo.svg";
 import siteConfig from "../../config/siteConfig";
 
@@ -31,16 +31,15 @@ export default function LoginPage({ onLogin }) {
 
   return (
     <div
-      className="h-screen flex items-center justify-center p-3 relative overflow-hidden"
+      className="h-screen flex items-center justify-center p-3 relative overflow-hidden bg-black select-none"
       style={{
-        backgroundImage: `url(${templeBg})`,
+        backgroundImage: `url(${loginBg})`,
         backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
+        backgroundPosition: "center center",
       }}
     >
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-maroon-950/90 via-maroon-950/85 to-black/95" />
+      {/* Subtle vignette dark overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90 pointer-events-none" />
 
       {/* Subtle animated particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -51,14 +50,18 @@ export default function LoginPage({ onLogin }) {
             style={{
               left: `${15 + i * 15}%`,
               top: `${10 + i * 12}%`,
-              animation: `float ${3 + i * 0.7}s ease-in-out infinite alternate`,
+              animationName: "float",
+              animationDuration: `${3 + i * 0.7}s`,
+              animationTimingFunction: "ease-in-out",
+              animationIterationCount: "infinite",
+              animationDirection: "alternate",
               animationDelay: `${i * 0.4}s`,
             }}
           />
         ))}
       </div>
 
-      {/* Login Card */}
+      {/* Centered Login Card */}
       <div className="relative z-10 w-full max-w-sm">
         {/* Temple Header */}
         <div className="text-center mb-3">
@@ -130,7 +133,7 @@ export default function LoginPage({ onLogin }) {
           <form onSubmit={handleSubmit} className="space-y-3">
             {/* Username */}
             <div className="space-y-1">
-              <label className="text-[10px] font-bold text-white/70 uppercase tracking-wider block">
+              <label className="text-[10px] font-bold text-white/70 uppercase tracking-wider block text-left">
                 Username / Mobile
               </label>
               <div className="relative">
@@ -155,7 +158,7 @@ export default function LoginPage({ onLogin }) {
 
             {/* Password */}
             <div className="space-y-1">
-              <label className="text-[10px] font-bold text-white/70 uppercase tracking-wider block">
+              <label className="text-[10px] font-bold text-white/70 uppercase tracking-wider block text-left">
                 Password
               </label>
               <div className="relative">
@@ -230,7 +233,6 @@ export default function LoginPage({ onLogin }) {
               )}
             </button>
           </form>
-
         </div>
 
         {/* Footer */}

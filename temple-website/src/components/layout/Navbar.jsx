@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import siteConfig from "../../config/siteConfig";
 import GopuramMotif from "../ui/GopuramMotif";
 
-export default function Navbar({ onSelectAboutSection, onViewCart, cartCount, onLogout, userName }) {
+export default function Navbar({ onSelectAboutSection, onViewCart, cartCount, onLogout, userName, onOpenFeature }) {
   const [open, setOpen] = useState(false);
   const [timeStr, setTimeStr] = useState("");
   const [hoveredMenu, setHoveredMenu] = useState(null);
@@ -251,7 +251,11 @@ export default function Navbar({ onSelectAboutSection, onViewCart, cartCount, on
                               <button
                                 key={sub.id}
                                 onClick={() => {
-                                  onSelectAboutSection(sub.id);
+                                  if (sub.id === "panchangam" || sub.id === "darshan" || sub.id === "travel" || sub.id === "hundi") {
+                                    onOpenFeature && onOpenFeature(sub.id);
+                                  } else {
+                                    onSelectAboutSection(sub.id);
+                                  }
                                   setHoveredMenu(null);
                                 }}
                                 className="w-full text-left px-4 py-2 hover:bg-dev-blue/5 hover:text-dev-orange transition-colors font-semibold"
@@ -269,11 +273,22 @@ export default function Navbar({ onSelectAboutSection, onViewCart, cartCount, on
                   <a
                     key={l.label}
                     href={l.href}
-                    onClick={() => {
-                      onSelectAboutSection(null);
+                    onClick={(e) => {
+                      if (l.label === "E-Hundi" || l.label === "Donations") {
+                        e.preventDefault();
+                        onOpenFeature && onOpenFeature("hundi");
+                      } else if (l.label === "Panchangam") {
+                        e.preventDefault();
+                        onOpenFeature && onOpenFeature("panchangam");
+                      } else if (l.label === "Travel Guide") {
+                        e.preventDefault();
+                        onOpenFeature && onOpenFeature("travel");
+                      } else {
+                        onSelectAboutSection(null);
+                      }
                       setHoveredMenu(null);
                     }}
-                    className="px-2 py-1 rounded hover:bg-white/10 transition-all whitespace-nowrap border border-transparent hover:border-white/10 text-white"
+                    className="px-2.5 py-1 rounded hover:bg-white/10 transition-all whitespace-nowrap border border-transparent hover:border-white/10 uppercase font-bold"
                   >
                     {l.label}
                   </a>

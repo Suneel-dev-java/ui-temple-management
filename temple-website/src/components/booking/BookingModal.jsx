@@ -85,6 +85,51 @@ export default function BookingModal({ item, type, onClose, onAddToCart }) {
             />
           </div>
 
+          {/* Date Picker */}
+          <div>
+            <label className="block text-xs uppercase tracking-wider font-bold text-ink/75 mb-1">
+              {type === "seva" ? "Seva Date *" : "Check-in Date *"}
+            </label>
+            <input
+              type="date"
+              required
+              min={new Date().toISOString().split("T")[0]}
+              value={formData.date}
+              onChange={(e) =>
+                setFormData({ ...formData, date: e.target.value })
+              }
+              className="w-full bg-white border border-gold-500/30 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold-500 text-ink shadow-inner"
+            />
+          </div>
+
+          {/* E-Prasadam Home Delivery Option */}
+          {type === "seva" && (
+            <div className="bg-amber-100/60 border border-amber-300 rounded-lg p-3 space-y-2">
+              <label className="flex items-center gap-2 cursor-pointer font-bold text-maroon-950 text-xs">
+                <input
+                  type="checkbox"
+                  checked={formData.homeDelivery || false}
+                  onChange={(e) =>
+                    setFormData({ ...formData, homeDelivery: e.target.checked })
+                  }
+                  className="accent-maroon-800 w-4 h-4"
+                />
+                📦 Send Prasadam to my Home Address (+₹50 Speed Post)
+              </label>
+              {formData.homeDelivery && (
+                <textarea
+                  placeholder="Enter full postal address & pincode for Prasadam Speed Post delivery..."
+                  value={formData.deliveryAddress || ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, deliveryAddress: e.target.value })
+                  }
+                  rows={2}
+                  className="w-full bg-white border border-gold-500/40 rounded p-2 text-xs text-ink focus:outline-none focus:ring-1 focus:ring-maroon-800"
+                />
+              )}
+            </div>
+          )}
+
           {type === "seva" ? (
             <div className="grid grid-cols-2 gap-3">
               <div>
