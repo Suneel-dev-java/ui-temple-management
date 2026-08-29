@@ -1,7 +1,7 @@
-import siteConfig from "../config/siteConfig";
-import SectionHeading from "./SectionHeading";
+import siteConfig from "../../config/siteConfig";
+import SectionHeading from "../ui/SectionHeading";
 
-export default function Sevas() {
+export default function Sevas({ onBook }) {
   return (
     <section id="sevas" className="bg-maroon-900 py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-4">
@@ -19,7 +19,10 @@ export default function Sevas() {
               <p className="text-sm text-sandal/70 leading-snug flex-1">{s.desc}</p>
               <div className="flex items-center justify-between pt-2 border-t border-sandal/10">
                 <span className="text-gold-400 font-semibold">{s.price}</span>
-                <button className="text-xs uppercase tracking-widest text-sandal/80 hover:text-gold-400 transition-colors">
+                <button
+                  onClick={() => onBook(s)}
+                  className="text-xs font-bold uppercase tracking-widest text-gold-400 bg-maroon-950/40 hover:bg-maroon-950 px-3 py-1.5 rounded border border-gold-500/20 hover:border-gold-500/60 transition-all"
+                >
                   Book →
                 </button>
               </div>

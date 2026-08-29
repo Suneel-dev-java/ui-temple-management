@@ -1,5 +1,5 @@
-import siteConfig from "../config/siteConfig";
-import SectionHeading from "./SectionHeading";
+import siteConfig from "../../config/siteConfig";
+import SectionHeading from "../ui/SectionHeading";
 
 export default function About() {
   const { about } = siteConfig;

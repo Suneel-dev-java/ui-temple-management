@@ -1,5 +1,5 @@
-import siteConfig from "../config/siteConfig";
-import { icons } from "./icons";
+import siteConfig from "../../config/siteConfig";
+import { icons } from "../ui/icons";
 
 export default function QuickLinks() {
   return (

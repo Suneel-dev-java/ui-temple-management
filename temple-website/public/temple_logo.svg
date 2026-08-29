@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Gradients -->
+    <radialGradient id="pinkBg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffa6c9"/>
+      <stop offset="70%" stop-color="#ff75a0"/>
+      <stop offset="100%" stop-color="#e63973"/>
+    </radialGradient>
+    <radialGradient id="innerBg" cx="50%" cy="45%" r="45%">
+      <stop offset="0%" stop-color="#ffe6ee"/>
+      <stop offset="60%" stop-color="#ffb3cc"/>
+      <stop offset="100%" stop-color="#ff80ab"/>
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe066"/>
+      <stop offset="50%" stop-color="#ffd700"/>
+      <stop offset="100%" stop-color="#ccac00"/>
+    </linearGradient>
+    <linearGradient id="lingamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2b2b2b"/>
+      <stop offset="30%" stop-color="#555555"/>
+      <stop offset="70%" stop-color="#1a1a1a"/>
+      <stop offset="100%" stop-color="#0d0d0d"/>
+    </linearGradient>
+
+    <!-- Text Path Arcs -->
+    <!-- Top text arc with wide sweep so full text fits -->
+    <path id="topArc" d="M 45,260 A 205,205 0 1,1 455,260" fill="none"/>
+    <!-- Bottom text arc -->
+    <path id="bottomArc" d="M 140,390 A 175,175 0 0,0 360,390" fill="none"/>
+  </defs>
+
+  <!-- Outer Black Border -->
+  <circle cx="250" cy="250" r="246" fill="#000000" stroke="#ffd700" stroke-width="3"/>
+  <!-- Main Pink Donut Outer Ring -->
+  <circle cx="250" cy="250" r="240" fill="url(#pinkBg)"/>
+  <circle cx="250" cy="250" r="240" fill="none" stroke="#000000" stroke-width="4"/>
+
+  <!-- Inner Ring Separator -->
+  <circle cx="250" cy="250" r="172" fill="none" stroke="#000000" stroke-width="3"/>
+  <!-- Inner Background Circle -->
+  <circle cx="250" cy="250" r="170" fill="url(#innerBg)"/>
+
+  <!-- Star / Sri Yantra Motif Background in Inner Circle -->
+  <g opacity="0.35" stroke="#d6336c" stroke-width="2" fill="none">
+    <polygon points="250,90 380,310 120,310"/>
+    <polygon points="250,330 380,110 120,110"/>
+    <polygon points="250,105 365,300 135,300"/>
+    <polygon points="250,315 365,120 135,120"/>
+    <circle cx="250" cy="210" r="95" stroke="#c2255c" stroke-width="1.5" stroke-dasharray="4,4"/>
+  </g>
+
+  <!-- SHIVA LINGAM & VASTRAM AT CENTER -->
+  <g id="shivaLingam" transform="translate(0, 10)">
+    <!-- Base / Yoni Pitham -->
+    <path d="M 160,290 C 160,270 210,265 250,265 C 290,265 340,270 340,290 C 340,315 300,325 290,325 L 340,325 C 355,325 360,335 350,345 C 340,355 310,355 250,355 C 190,355 160,355 150,345 C 140,335 145,325 160,325 L 210,325 C 200,325 160,315 160,290 Z" fill="#111" stroke="#333" stroke-width="2"/>
+    <ellipse cx="250" cy="275" rx="80" ry="20" fill="#222" stroke="#444" stroke-width="1"/>
+
+    <!-- Lingam Pillar -->
+    <path d="M 212,270 L 212,170 C 212,130 288,130 288,170 L 288,270 Z" fill="url(#lingamGrad)" stroke="#444" stroke-width="2"/>
+    <ellipse cx="250" cy="165" rx="38" ry="25" fill="#3a3a3a"/>
+
+    <!-- Vibhuti (3 White Horizontal Lines on Lingam) -->
+    <g stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.95">
+      <line x1="228" y1="165" x2="272" y2="165"/>
+      <line x1="225" y1="174" x2="275" y2="174"/>
+      <line x1="228" y1="183" x2="272" y2="183"/>
+    </g>
+    <!-- Kumkum Bindi in Middle of Vibhuti -->
+    <circle cx="250" cy="174" r="5" fill="#e60000"/>
+    <circle cx="250" cy="174" r="2" fill="#ffea00"/>
+
+    <!-- Orange & Yellow Silk Vastram (Draped Cloth) around Pitham -->
+    <path d="M 180,275 C 180,270 250,285 320,275 L 325,320 C 280,335 220,335 175,320 Z" fill="#ff6600" stroke="#cc5200" stroke-width="1.5"/>
+    <path d="M 195,278 C 220,286 280,286 305,278 L 308,318 C 275,328 225,328 192,318 Z" fill="#ffaa00"/>
+    <!-- Red Border on Vastram -->
+    <path d="M 175,320 C 220,335 280,335 325,320" fill="none" stroke="#b30000" stroke-width="5"/>
+    <path d="M 175,320 C 220,335 280,335 325,320" fill="none" stroke="#ffd700" stroke-width="2"/>
+
+    <!-- Flower Garlands (Banti / Malle Poolu) draped on Lingam -->
+    <path d="M 214,160 C 190,200 185,260 215,310 C 235,330 265,330 285,310 C 315,260 310,200 286,160" fill="none" stroke="#ffcc00" stroke-width="12" stroke-linecap="round" stroke-dasharray="8,4"/>
+    <path d="M 220,175 C 205,210 200,250 225,295 C 240,310 260,310 275,295 C 300,250 295,210 280,175" fill="none" stroke="#ff5500" stroke-width="8" stroke-linecap="round" stroke-dasharray="6,3"/>
+    <path d="M 225,150 C 215,180 240,195 250,195 C 260,195 285,180 275,150" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <!-- TRISHUL ICONS (LEFT & RIGHT AT BOTTOM INNER CIRCLE) -->
+  <g transform="translate(130, 360) scale(0.65)">
+    <path d="M 20,0 L 20,40 M 10,10 C 10,30 30,30 30,10 M 20,0 L 20,-10 M 10,10 L 5,2 M 30,10 L 35,2 M 20,-10 L 20,0" fill="none" stroke="url(#goldGrad)" stroke-width="5" stroke-linecap="round"/>
+    <path d="M 20,-12 L 25,0 L 15,0 Z" fill="#ffd700"/>
+  </g>
+  <g transform="translate(340, 360) scale(0.65)">
+    <path d="M 20,0 L 20,40 M 10,10 C 10,30 30,30 30,10 M 20,0 L 20,-10 M 10,10 L 5,2 M 30,10 L 35,2 M 20,-10 L 20,0" fill="none" stroke="url(#goldGrad)" stroke-width="5" stroke-linecap="round"/>
+    <path d="M 20,-12 L 25,0 L 15,0 Z" fill="#ffd700"/>
+  </g>
+
+  <!-- TELUGU TEXT ON OUTER PINK RING -->
+  <!-- Top Arc Telugu Title -->
+  <text font-family="'Noto Sans Telugu', 'Tiro Telugu', 'Segoe UI', sans-serif" font-weight="900" font-size="20.5" fill="#000000">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">
+      శ్రీ దుర్గా భవానీ సమేత రామలింగేశ్వర స్వామి దేవస్థానం
+    </textPath>
+  </text>
+  <!-- Yellow stroke duplicate for sharp contrast matching logo -->
+  <text font-family="'Noto Sans Telugu', 'Tiro Telugu', 'Segoe UI', sans-serif" font-weight="900" font-size="20.5" fill="#ffff00" stroke="#000000" stroke-width="0.8" opacity="0.95">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">
+      శ్రీ దుర్గా భవానీ సమేత రామలింగేశ్వర స్వామి దేవస్థానం
+    </textPath>
+  </text>
+
+  <!-- Bottom Arc Telugu Location: దగదర్తి -->
+  <text font-family="'Noto Sans Telugu', 'Tiro Telugu', 'Segoe UI', sans-serif" font-weight="900" font-size="30" fill="#00e5ff" stroke="#000000" stroke-width="2.5" paint-order="stroke fill">
+    <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">
+      దగదర్తి
+    </textPath>
+  </text>
+</svg>
